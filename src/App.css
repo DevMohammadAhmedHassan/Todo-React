@@ -125,19 +125,24 @@ main{
     list-style: none;
 
 }
-.items ul li{
+.items ul li div{
     background-color: rgb(214, 214, 214);
     display: flex;
     justify-content: space-between;
+    align-items:center;
     padding: 5px 15px;
     border-radius: 15px;
 
-    opacity: 0;                           /* for js */
-    transform: translateY(-10px);
+    /* opacity: 0;                           for js */
+    /* transform: translateY(-10px); */
     transition: all 0.23s;
 }
 .items ul li p{
     font-weight: normal;
+}
+.items ul li div .buttons{
+    padding-left: 0px;
+    padding-right: 0px;
 }
 .items ul li.show {
   opacity: 1;                             /* for js */
