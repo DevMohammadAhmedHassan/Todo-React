@@ -1,13 +1,17 @@
-import React from 'react'
+import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
-
-const Item = () => {
+const Item = (props) => {
   return (
-    <div>
-      <p>React</p>
+    <li>
+      {/* show pending or complete item */}
+      {props.task.status === "pending" ? ( 
+        <p>{props.task.name}</p>
+      ) : (
+        <del>{props.task.name}</del>
+      )}
       <div className="buttons">
         <button className="check">
           <FontAwesomeIcon
@@ -24,8 +28,8 @@ const Item = () => {
           />
         </button>
       </div>
-    </div>
+    </li>
   );
-}
+};
 
-export default Item
+export default Item;

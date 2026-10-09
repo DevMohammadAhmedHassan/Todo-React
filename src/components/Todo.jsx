@@ -4,6 +4,8 @@ import { faReact } from "@fortawesome/free-brands-svg-icons";
 import Item from "./Item";
 
 const Todo = () => {
+
+  // states
   const [list, setList] = useState([
     {
       id: 1,
@@ -17,10 +19,29 @@ const Todo = () => {
     },
     {
       id: 3,
-      name: "html",
-      status: "pending",
+      name: "Biryani",
+      status: "completed",
     }
   ]);
+
+  const [input, setInput]= useState("");
+
+  // Functions
+  const handleInputChange=(e)=>{
+    setInput(e.target.value);
+    console.log(e.target.value);
+  }
+
+  const addTask=()=>{
+    console.log(input);
+    const newTask = {
+      id: Math.floor(Math.random()*100),
+      name: input,
+      status: "pending",
+    };
+
+    setList([...list ,newTask]);
+  }
 
   return (
     <div>
@@ -32,8 +53,9 @@ const Todo = () => {
           </div>
 
           <div className="input">
-            <input type="text" placeholder="your item" />
-            <button>submit</button>
+            <input type="text" placeholder="your item" value={input} onChange={handleInputChange}/>
+
+            <button onClick={addTask}>submit</button>
           </div>
 
           {/* Your Tasks */}
@@ -42,27 +64,8 @@ const Todo = () => {
 
             <ul>
               {list.map((element) => (
-                <li>
-                  <Item />
-                </li>
+                  <Item task={element}/>
               ))}
-            </ul>
-
-            <ul>
-              {/* <li>
-              <p>React</p>
-              <div>
-                <button>
-                  <i className="fa-solid fa-check" style="color: rgb(0, 209, 70)"></i>
-                </button>
-                <button>
-                  <i
-                    className="fa-regular fa-trash-can"
-                    style="color: rgb(211, 0, 0)"
-                  ></i>
-                </button>
-              </div>
-            </li> */}
             </ul>
           </div>
 

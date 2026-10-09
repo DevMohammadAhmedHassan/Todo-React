@@ -125,12 +125,12 @@ main{
     list-style: none;
 
 }
-.items ul li div{
+.items ul li {
     background-color: rgb(214, 214, 214);
     display: flex;
     justify-content: space-between;
     align-items:center;
-    padding: 5px 15px;
+    padding: 7px 15px;
     border-radius: 15px;
 
     /* opacity: 0;                           for js */
@@ -140,7 +140,7 @@ main{
 .items ul li p{
     font-weight: normal;
 }
-.items ul li div .buttons{
+.buttons{
     padding-left: 0px;
     padding-right: 0px;
 }
