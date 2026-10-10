@@ -4,7 +4,6 @@ import { faReact } from "@fortawesome/free-brands-svg-icons";
 import Item from "./Item";
 
 const Todo = () => {
-
   // states
   const [list, setList] = useState([
     {
@@ -21,28 +20,54 @@ const Todo = () => {
       id: 3,
       name: "Biryani",
       status: "completed",
-    }
+    },
   ]);
 
-  const [input, setInput]= useState("");
+  const [input, setInput] = useState("");
 
   // Functions
-  const handleInputChange=(e)=>{
+  const handleInputChange = (e) => {
     setInput(e.target.value);
     console.log(e.target.value);
-  }
+  };
 
-  const addTask=()=>{
+  const addTask = () => {
+    // to avoid blank input
+    if (input === "") {
+      return;
+    }
     console.log(input);
     const newTask = {
-      id: Math.floor(Math.random()*100),
+      id: Math.floor(Math.random() * 100),
       name: input,
       status: "pending",
     };
 
-    setList([...list ,newTask]);
-  }
+    setList([...list, newTask]);
+  };
 
+  const clearAllTasks = () => {
+    setList([]);
+  };
+
+  const doneTask = (id)=>{
+    const updatedList = list.map((element)=>{
+      if(element.id === id){
+        element.status = "completed";
+      }
+      return element;
+    })
+    setList(updatedList);
+  }
+  
+  const deleteTask = (id) => {
+    const updatedList = list.filter((element)=> {
+      return(element.id !== id)
+    })
+    setList(updatedList);
+  };
+
+  // UI
   return (
     <div>
       <main>
@@ -53,24 +78,35 @@ const Todo = () => {
           </div>
 
           <div className="input">
-            <input type="text" placeholder="your item" value={input} onChange={handleInputChange}/>
+            <input
+              type="text"
+              placeholder="your item"
+              value={input}
+              onChange={handleInputChange}
+            />
 
             <button onClick={addTask}>submit</button>
           </div>
 
           {/* Your Tasks */}
           <div className="items">
-            <h4>Your Tasks</h4>
+            {list.length > 0 && <h4>Your Tasks</h4>}
 
+            {/* List of all the tasks */}
             <ul>
               {list.map((element) => (
-                  <Item task={element}/>
+                //passing props and you can also pass functions as props
+                <Item task={element} doneTask={doneTask} deleteTask={deleteTask} />
               ))}
             </ul>
           </div>
 
           {/* Clear All Button */}
-          <button className="clearAll">Clear All</button>
+          {list.length > 0 && (
+            <button className="clearAll" onClick={clearAllTasks}>
+              Clear All
+            </button>
+          )}
         </div>
 
         <p className="name">
