@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faReact } from "@fortawesome/free-brands-svg-icons";
 import Item from "./Item";
 
 const Todo = () => {
-  // states
-  const [list, setList] = useState([
-    {
-      id: 1,
-      name: "react",
-      status: "pending",
-    },
-    {
-      id: 2,
-      name: "css",
-      status: "pending",
-    },
-    {
-      id: 3,
-      name: "Biryani",
-      status: "completed",
-    },
-  ]);
+  // loading data from local storage
+  const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  const [list, setList] = useState(savedTasks);
+  // This is how objects will be
+  // {
+  //   id: 1,
+  //   name: "react",
+  //   status: "pending",
+  // },
+  // {
+  //   id: 2,
+  //   name: "css",
+  //   status: "pending",
+  // },
+  // {
+  //   id: 3,
+  //   name: "Biryani",
+  //   status: "completed",
+  // },
 
   const [input, setInput] = useState("");
 
@@ -37,6 +39,7 @@ const Todo = () => {
       return;
     }
     console.log(input);
+
     const newTask = {
       id: Math.floor(Math.random() * 100),
       name: input,
@@ -44,28 +47,36 @@ const Todo = () => {
     };
 
     setList([...list, newTask]);
+
+    setInput(""); //clear input area after adding task
   };
 
   const clearAllTasks = () => {
     setList([]);
   };
 
-  const doneTask = (id)=>{
-    const updatedList = list.map((element)=>{
-      if(element.id === id){
+  const doneTask = (id) => {
+    const updatedList = list.map((element) => {
+      if (element.id === id) {
         element.status = "completed";
       }
       return element;
-    })
-    setList(updatedList);
-  }
-  
-  const deleteTask = (id) => {
-    const updatedList = list.filter((element)=> {
-      return(element.id !== id)
-    })
+    });
     setList(updatedList);
   };
+
+  const deleteTask = (id) => {
+    const updatedList = list.filter((element) => {
+      return element.id !== id;
+    });
+    setList(updatedList);
+  };
+
+  // saving to local storage
+  // using useEffect to trigger the saving whenever the list changes
+  useEffect(()=>{
+    localStorage.setItem("tasks", JSON.stringify(list));
+  }, [list]);
 
   // UI
   return (
@@ -83,6 +94,12 @@ const Todo = () => {
               placeholder="your item"
               value={input}
               onChange={handleInputChange}
+              //to add task with enter key
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  addTask();
+                }
+              }}
             />
 
             <button onClick={addTask}>submit</button>
@@ -96,7 +113,11 @@ const Todo = () => {
             <ul>
               {list.map((element) => (
                 //passing props and you can also pass functions as props
-                <Item task={element} doneTask={doneTask} deleteTask={deleteTask} />
+                <Item
+                  task={element}
+                  doneTask={doneTask}
+                  deleteTask={deleteTask}
+                />
               ))}
             </ul>
           </div>
