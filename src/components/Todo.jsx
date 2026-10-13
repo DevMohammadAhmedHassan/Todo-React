@@ -94,6 +94,7 @@ const Todo = () => {
               placeholder="your item"
               value={input}
               onChange={handleInputChange}
+              
               //to add task with enter key
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
